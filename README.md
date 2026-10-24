@@ -2,8 +2,9 @@
 
 Bilişim Kampı Android eğitiminin referans projesi.
 
-Bu branch (`cp1-baslangic`) boş iskelettir: Android Studio'da "Empty Activity" şablonuyla
-oluşturulmuş, teması hazır bir proje. Uygulama açıldığında ekranda "Merhaba Kamp!" yazar.
+Bu branch (`cp1-bitis`) Uygulama 2'nin çıktısıdır: Türkiye'nin 81 ili, plaka rozetli
+kartlar hâlinde kaydırılabilir bir listede gösterilir. Karta dokununca Logcat'e
+`Tıklandı: Ankara` yazılır. Veri henüz koda gömülüdür.
 
 **Teknoloji:** Kotlin · Jetpack Compose (Material 3)
 
