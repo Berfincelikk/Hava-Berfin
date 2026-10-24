@@ -2,16 +2,19 @@
 
 Bilişim Kampı Android eğitiminin referans projesi.
 
-Bu branch (`cp1-bitis`) Uygulama 2'nin çıktısıdır: Türkiye'nin 81 ili, plaka rozetli
-kartlar hâlinde kaydırılabilir bir listede gösterilir. Karta dokununca Logcat'e
-`Tıklandı: Ankara` yazılır. Veri henüz koda gömülüdür.
+Bu branch (`cp2-bitis`) Uygulama 3'ün çıktısıdır: listenin üstünde bir arama kutusu
+vardır, yazdıkça liste süzülür, sonuç yoksa "Şehir bulunamadı" görünür. Arama metni ve
+filtreleme `CityViewModel` içinde `StateFlow` ile tutulur; ekran döndüğünde kaybolmaz.
 
-**Teknoloji:** Kotlin · Jetpack Compose (Material 3)
+**Mimari:** UI (Composable) → ViewModel (StateFlow) → veri kaynağı
+
+**Teknoloji:** Kotlin · Jetpack Compose (Material 3) · ViewModel + StateFlow · Coroutines
 
 ## Çalıştırma
 
 ```bash
 ./gradlew assembleDebug        # debug APK
+./gradlew testDebugUnitTest    # unit testler
 ./gradlew spotlessApply        # ktlint formatı
 ```
 
