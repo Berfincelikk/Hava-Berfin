@@ -2,6 +2,7 @@ package com.kampplus.hava.ui.city
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.kampplus.hava.R
 import com.kampplus.hava.data.CityCatalog
 import com.kampplus.hava.model.City
+import com.kampplus.hava.ui.component.EmptyView
 import com.kampplus.hava.ui.theme.HavaTheme
 
 private const val TAG = "CityScreen"
@@ -67,10 +70,20 @@ fun CityScreen(modifier: Modifier = Modifier, cities: List<City> = CityCatalog.c
                 onQueryChange = { newQuery -> query = newQuery },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
-            CityList(
-                cities = results,
-                onCityClick = { city -> Log.d(TAG, "Tıklandı: ${city.name}") }
-            )
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                // Arama hiçbir şehirle eşleşmediyse boş liste yerine açıklama gösterilir.
+                if (results.isEmpty()) {
+                    EmptyView(
+                        title = "Şehir bulunamadı",
+                        message = "Yazımı kontrol et ya da başka bir şehir dene."
+                    )
+                } else {
+                    CityList(
+                        cities = results,
+                        onCityClick = { city -> Log.d(TAG, "Tıklandı: ${city.name}") }
+                    )
+                }
+            }
         }
     }
 }
