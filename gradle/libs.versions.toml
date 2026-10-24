@@ -6,6 +6,8 @@ lifecycle = "2.9.4"
 activityCompose = "1.11.0"
 composeBom = "2025.09.01"
 coroutines = "1.10.2"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
 junit = "4.13.2"
 spotless = "7.2.1"
 ktlint = "1.7.1"
@@ -30,6 +32,12 @@ androidx-compose-material-icons-core = { group = "androidx.compose.material", na
 
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+
+# Retrofit + Gson ile JSON cozumleme.
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+# Testlerde gercek bir sunucu yerine sahte sunucu ayaga kaldirmak icin.
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 

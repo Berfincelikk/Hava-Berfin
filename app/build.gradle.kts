@@ -60,8 +60,12 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
 
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.okhttp.mockwebserver)
 
     // @Preview'lari Android Studio'da gosterebilmek icin yalnizca debug derlemesinde.
     debugImplementation(libs.androidx.compose.ui.tooling)
