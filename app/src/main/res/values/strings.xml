@@ -2,6 +2,9 @@
     <!--
       Uygulamadaki sabit metinler burada durur.
       Tek yerden değiştirilir, başka dillere çevrilebilir.
+
+      Not: Hata mesajları ViewModel içinde yazılıdır; orada metni
+      hatanın türüne göre seçiyoruz.
     -->
 
     <!-- Telefonun ana ekranında görünen uygulama adı. -->
@@ -11,4 +14,14 @@
     <string name="search_hint">Şehir ara</string>
     <string name="action_clear">Temizle</string>
     <string name="action_retry">Tekrar dene</string>
+
+    <!-- Tahmin ekranı -->
+    <string name="detail_title">Hava Tahmini</string>
+    <string name="action_back">Geri</string>
+    <string name="detail_hourly">Saatlik</string>
+    <string name="detail_daily">7 Günlük</string>
+    <string name="detail_feels_like">Hissedilen</string>
+    <string name="detail_humidity">Nem</string>
+    <string name="detail_wind">Rüzgâr</string>
+    <string name="today">Bugün</string>
 </resources>
