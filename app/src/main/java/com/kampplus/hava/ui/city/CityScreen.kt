@@ -1,6 +1,5 @@
 package com.kampplus.hava.ui.city
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,8 +40,6 @@ import com.kampplus.hava.ui.component.ErrorView
 import com.kampplus.hava.ui.component.ShimmerList
 import com.kampplus.hava.ui.theme.HavaTheme
 
-private const val TAG = "CityScreen"
-
 /**
  * Şehir arama ekranının "bağlayıcı" katmanı.
  *
@@ -54,7 +51,7 @@ private const val TAG = "CityScreen"
  * çevirir ve uygulama arka plandayken dinlemeyi durdurur.
  */
 @Composable
-fun CityRoute(modifier: Modifier = Modifier, viewModel: CityViewModel = viewModel()) {
+fun CityRoute(onCityClick: (City) -> Unit, modifier: Modifier = Modifier, viewModel: CityViewModel = viewModel()) {
     val query by viewModel.query.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -63,7 +60,7 @@ fun CityRoute(modifier: Modifier = Modifier, viewModel: CityViewModel = viewMode
         uiState = uiState,
         onQueryChange = viewModel::onQueryChange,
         onSearch = viewModel::search,
-        onCityClick = { city -> Log.d(TAG, "Tıklandı: ${city.name}") },
+        onCityClick = onCityClick,
         modifier = modifier
     )
 }
@@ -122,12 +119,7 @@ fun CityScreen(
  * ("değer aşağı, olay yukarı" — state hoisting).
  */
 @Composable
-private fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    onSearch: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Unit, modifier: Modifier = Modifier) {
     val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedTextField(
         value = query,
