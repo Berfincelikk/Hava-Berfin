@@ -21,40 +21,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kampplus.hava.model.City
 import com.kampplus.hava.ui.theme.HavaTheme
 
 /**
  * Listedeki tek bir şehir satırı.
  *
- * Yapısı: `Card` → `Row` → rozet + `Column(weight(1f))` + sağ ok.
+ * Yapısı: `Card` → `Row` → rozet + `Spacer` + `Column(weight(1f))` + sağ ok.
  *
  * `Modifier.weight(1f)`: ortadaki sütun kalan boşluğun tamamını kaplar, böylece
  * sağ oku sağ kenara iter. Uzun şehir adları (Afyonkarahisar) rozeti ezmez.
  *
  * @param onClick Karta dokunulduğunda çağrılır. Bileşen ne olacağını bilmez,
- *   yalnızca haber verir.
+ *   yalnızca haber verir — olay yukarı, veri aşağı (state hoisting).
  */
 @Composable
-fun CityCard(name: String, plate: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun CityCard(city: City, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            PlateBadge(plate = plate)
+            CountryBadge(code = city.countryCode)
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = name,
+                    text = city.name,
                     style = MaterialTheme.typography.titleMedium,
                     // Tek satıra sığmayan ad "..." ile kısaltılır, satır kaymaz.
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "Plaka $plate",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = city.subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Icon(
@@ -68,12 +71,13 @@ fun CityCard(name: String, plate: Int, onClick: () -> Unit, modifier: Modifier =
 }
 
 /**
- * Plaka rozeti: iki haneli, sıfırla doldurulmuş kod ("06", "34").
+ * Ülke kodu rozeti ("TR").
  *
- * `padStart(2, '0')`: 6 → "06". Rozetteki yazı hep aynı genişlikte görünür.
+ * Veri API'den geldiği için elimizde plaka numarası yok; rozete ülke kodunu
+ * koyuyoruz. Kod gelmezse "?" gösterilir.
  */
 @Composable
-private fun PlateBadge(plate: Int, modifier: Modifier = Modifier) {
+private fun CountryBadge(code: String?, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.size(44.dp),
         shape = RoundedCornerShape(12.dp),
@@ -82,7 +86,7 @@ private fun PlateBadge(plate: Int, modifier: Modifier = Modifier) {
     ) {
         Box(contentAlignment = Alignment.Center) {
             Text(
-                text = plate.toString().padStart(2, '0'),
+                text = code ?: "?",
                 style = MaterialTheme.typography.labelLarge
             )
         }
@@ -93,6 +97,17 @@ private fun PlateBadge(plate: Int, modifier: Modifier = Modifier) {
 @Composable
 private fun CityCardPreview() {
     HavaTheme {
-        CityCard(name = "Ankara", plate = 6, onClick = {})
+        CityCard(
+            city = City(
+                id = 323786,
+                name = "Ankara",
+                latitude = 39.91987,
+                longitude = 32.85427,
+                countryCode = "TR",
+                country = "Türkiye",
+                admin1 = "Ankara"
+            ),
+            onClick = {}
+        )
     }
 }
