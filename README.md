@@ -2,13 +2,20 @@
 
 Bilişim Kampı Android eğitiminin referans projesi.
 
-Bu branch (`cp2-bitis`) Uygulama 3'ün çıktısıdır: listenin üstünde bir arama kutusu
-vardır, yazdıkça liste süzülür, sonuç yoksa "Şehir bulunamadı" görünür. Arama metni ve
-filtreleme `CityViewModel` içinde `StateFlow` ile tutulur; ekran döndüğünde kaybolmaz.
+Bu branch (`cp3-bitis`) Uygulama 4'ün çıktısıdır: şehirler artık koda gömülü değil,
+Open-Meteo geocoding servisinden geliyor. Her istek dört durumdan biriyle bitiyor —
+Loading (Shimmer), Success (liste), Empty ("Şehir bulunamadı"), Error (mesaj +
+"Tekrar dene").
 
-**Mimari:** UI (Composable) → ViewModel (StateFlow) → veri kaynağı
+**Mimari:** UI (Composable) → ViewModel (StateFlow) → Repository (suspend) → Retrofit
 
-**Teknoloji:** Kotlin · Jetpack Compose (Material 3) · ViewModel + StateFlow · Coroutines
+## API — Open-Meteo (anahtar gerekmez)
+
+`https://geocoding-api.open-meteo.com/v1/search?name=Ankara&count=10&language=tr`
+
+Sonuç yoksa yanıtta `results` alanı **hiç gelmez** → Boş (Empty) durumu.
+
+**Teknoloji:** Kotlin · Jetpack Compose (Material 3) · ViewModel + StateFlow · Coroutines · Retrofit + Gson
 
 ## Çalıştırma
 
