@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!--
+    Uygulama penceresinin XML teması. Asıl renkler Compose tarafında
+    (ui/theme/Theme.kt) tanımlanır; buradaki tema yalnızca pencere kabuğunu
+    ayarlar: başlık çubuğu olmasın (NoActionBar).
+  -->
+  <style name="Theme.Hava" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

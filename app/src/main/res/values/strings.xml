@@ -1,0 +1,9 @@
+<resources>
+    <!--
+      Uygulamadaki sabit metinler burada durur.
+      Tek yerden değiştirilir, başka dillere çevrilebilir.
+    -->
+
+    <!-- Telefonun ana ekranında görünen uygulama adı. -->
+    <string name="app_name">Hava</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--
+    XML tarafındaki tek renk: uygulama simgesinin arka planı.
+    Ekranlardaki renkler Compose'ta tanımlıdır (ui/theme/Color.kt).
+  -->
+  <color name="ic_launcher_background">#0288D1</color>
+</resources>
