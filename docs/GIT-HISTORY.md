@@ -73,10 +73,10 @@ refactor(city): move search state into CityViewModel
 docs: describe the search and viewmodel checkpoint
 ```
 
-Önce arama metni ekranda `rememberSaveable` ile tutulur. Ardından
-`refactor` commit'i state'i `CityViewModel`'e taşır: `MutableStateFlow` + `asStateFlow()`,
-ekranda `collectAsStateWithLifecycle`. Aynı commit `CityRoute` / `CityScreen`
-ayrımını getirir — ekran artık ViewModel tanımaz ve `@Preview`'da çalışır.
+Önce arama metni ekranda `rememberSaveable` ile tutulur. Ardından `refactor` commit'i
+state'i `CityViewModel`'e taşır: `MutableStateFlow` + `asStateFlow()`, ekranda
+`collectAsStateWithLifecycle`. Aynı commit `CityRoute` / `CityScreen` ayrımını getirir —
+ekran artık ViewModel tanımaz ve `@Preview`'da çalışır.
 
 ### Uygulama 4 — API ve dört durum → `cp3-bitis` / `cp4-baslangic`
 
