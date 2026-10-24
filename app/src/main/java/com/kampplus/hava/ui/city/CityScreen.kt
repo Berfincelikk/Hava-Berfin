@@ -22,14 +22,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kampplus.hava.R
 import com.kampplus.hava.data.CityCatalog
 import com.kampplus.hava.model.City
@@ -39,23 +38,44 @@ import com.kampplus.hava.ui.theme.HavaTheme
 private const val TAG = "CityScreen"
 
 /**
- * Şehir listesi ekranı, arama kutusuyla (Uygulama 3 · slayt 55).
+ * Şehir listesi ekranının "bağlayıcı" katmanı.
  *
- * Arama metni burada tutulur; hem [SearchBar] hem de liste onu kullanır.
- * Slayt 56: state'i, onu kullanan bileşenlerin **ortak üst bileşenine** taşı.
+ * Tek işi ViewModel'i edinip state'i toplamak ve [CityScreen]'e aktarmaktır.
+ * Bu ayrım sayesinde [CityScreen] ViewModel tanımaz: @Preview'da ve testte
+ * elle state verilerek çalıştırılabilir.
+ *
+ * `collectAsStateWithLifecycle`: StateFlow'u Compose state'ine
+ * çevirir ve uygulama arka plandayken dinlemeyi durdurur.
+ */
+@Composable
+fun CityRoute(modifier: Modifier = Modifier, viewModel: CityViewModel = viewModel()) {
+    val query by viewModel.query.collectAsStateWithLifecycle()
+    val results by viewModel.results.collectAsStateWithLifecycle()
+
+    CityScreen(
+        query = query,
+        cities = results,
+        onQueryChange = viewModel::onQueryChange,
+        onCityClick = { city -> Log.d(TAG, "Tıklandı: ${city.name}") },
+        modifier = modifier
+    )
+}
+
+/**
+ * Şehir listesi ekranı, arama kutusuyla (Uygulama 3).
+ *
+ * State tutmaz, yalnızca aldığı değerleri çizer ve olayları yukarı bildirir
+ * ("değer aşağı, olay yukarı" — state hoisting).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CityScreen(modifier: Modifier = Modifier, cities: List<City> = CityCatalog.cities) {
-    // `remember` yeniden çizimler arasında hatırlar ama ekran dönünce unutur.
-    // `rememberSaveable` değeri Bundle'a yazar; Activity yeniden kurulsa da geri gelir
-    //. Deneme: yaz, telefonu yan çevir, metin yerinde mi?
-    var query by rememberSaveable { mutableStateOf("") }
-
-    // Her tuş vuruşunda yeniden hesaplanır. `query` değişince Compose bu satırı
-    // tekrar çalıştırır ve liste süzülür (recomposition).
-    val results = cities.filter { it.name.contains(query.trim(), ignoreCase = true) }
-
+fun CityScreen(
+    query: String,
+    cities: List<City>,
+    onQueryChange: (String) -> Unit,
+    onCityClick: (City) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         modifier = modifier,
         topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
@@ -67,21 +87,18 @@ fun CityScreen(modifier: Modifier = Modifier, cities: List<City> = CityCatalog.c
         ) {
             SearchBar(
                 query = query,
-                onQueryChange = { newQuery -> query = newQuery },
+                onQueryChange = onQueryChange,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 // Arama hiçbir şehirle eşleşmediyse boş liste yerine açıklama gösterilir.
-                if (results.isEmpty()) {
+                if (cities.isEmpty()) {
                     EmptyView(
                         title = "Şehir bulunamadı",
                         message = "Yazımı kontrol et ya da başka bir şehir dene."
                     )
                 } else {
-                    CityList(
-                        cities = results,
-                        onCityClick = { city -> Log.d(TAG, "Tıklandı: ${city.name}") }
-                    )
+                    CityList(cities = cities, onCityClick = onCityClick)
                 }
             }
         }
@@ -91,9 +108,8 @@ fun CityScreen(modifier: Modifier = Modifier, cities: List<City> = CityCatalog.c
 /**
  * Arama kutusu.
  *
- * State tutmaz: değeri yukarıdan alır, her değişikliği yukarıya bildirir
- * ("değer aşağı, olay yukarı" — state hoisting). Bu sayede her yerde yeniden
- * kullanılabilir ve @Preview'da kolayca denenir.
+ * State tutmaz: değeri yukarıdan alır, her değişikliği yukarıya bildirir.
+ * Bu sayede her yerde yeniden kullanılabilir ve @Preview'da kolayca denenir.
  */
 @Composable
 private fun SearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -142,6 +158,19 @@ private fun CityList(cities: List<City>, onCityClick: (City) -> Unit, modifier: 
 @Composable
 private fun CityScreenPreview() {
     HavaTheme {
-        CityScreen(cities = CityCatalog.cities.take(5))
+        CityScreen(
+            query = "An",
+            cities = CityCatalog.cities.take(5),
+            onQueryChange = {},
+            onCityClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CityScreenEmptyPreview() {
+    HavaTheme {
+        CityScreen(query = "xyz", cities = emptyList(), onQueryChange = {}, onCityClick = {})
     }
 }

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.kampplus.hava.ui.city.CityScreen
+import com.kampplus.hava.ui.city.CityRoute
 import com.kampplus.hava.ui.theme.HavaTheme
 
 /**
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         // Süslü parantezin içi Compose dünyasıdır.
         setContent {
             HavaTheme {
-                CityScreen()
+                CityRoute()
             }
         }
     }

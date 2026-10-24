@@ -27,6 +27,15 @@ android {
     buildFeatures {
         compose = true
     }
+
+    testOptions {
+        unitTests {
+            // JVM testlerinde Android framework sınıfları (ör. android.util.Log) gerçekte
+            // yoktur. Varsayılan olarak her çağrı exception fırlatır; bu ayar framework
+            // çağrılarının hata yerine varsayılan değer dönmesini sağlar.
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 kotlin {
@@ -38,6 +47,8 @@ kotlin {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
 
     implementation(platform(libs.androidx.compose.bom))
@@ -47,7 +58,10 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
 
+    implementation(libs.kotlinx.coroutines.android)
+
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // @Preview'lari Android Studio'da gosterebilmek icin yalnizca debug derlemesinde.
     debugImplementation(libs.androidx.compose.ui.tooling)
