@@ -1,0 +1,98 @@
+package com.kampplus.hava.data
+
+import com.kampplus.hava.model.City
+
+/**
+ * Şehir verisinin kaynağı.
+ *
+ * Şu anda veri koda gömülüdür. Uygulama 4'te burası internetten veri çeken bir
+ * Repository ile değişecek; ekranlar ve ViewModel aynı kalacak. Katmanlara
+ * ayırmanın amacı tam olarak budur.
+ */
+object CityCatalog {
+
+    /** Türkiye'nin 81 ili, plaka sırasıyla. */
+    val cities: List<City> = listOf(
+        City("Adana", 1),
+        City("Adıyaman", 2),
+        City("Afyonkarahisar", 3),
+        City("Ağrı", 4),
+        City("Amasya", 5),
+        City("Ankara", 6),
+        City("Antalya", 7),
+        City("Artvin", 8),
+        City("Aydın", 9),
+        City("Balıkesir", 10),
+        City("Bilecik", 11),
+        City("Bingöl", 12),
+        City("Bitlis", 13),
+        City("Bolu", 14),
+        City("Burdur", 15),
+        City("Bursa", 16),
+        City("Çanakkale", 17),
+        City("Çankırı", 18),
+        City("Çorum", 19),
+        City("Denizli", 20),
+        City("Diyarbakır", 21),
+        City("Edirne", 22),
+        City("Elazığ", 23),
+        City("Erzincan", 24),
+        City("Erzurum", 25),
+        City("Eskişehir", 26),
+        City("Gaziantep", 27),
+        City("Giresun", 28),
+        City("Gümüşhane", 29),
+        City("Hakkâri", 30),
+        City("Hatay", 31),
+        City("Isparta", 32),
+        City("Mersin", 33),
+        City("İstanbul", 34),
+        City("İzmir", 35),
+        City("Kars", 36),
+        City("Kastamonu", 37),
+        City("Kayseri", 38),
+        City("Kırklareli", 39),
+        City("Kırşehir", 40),
+        City("Kocaeli", 41),
+        City("Konya", 42),
+        City("Kütahya", 43),
+        City("Malatya", 44),
+        City("Manisa", 45),
+        City("Kahramanmaraş", 46),
+        City("Mardin", 47),
+        City("Muğla", 48),
+        City("Muş", 49),
+        City("Nevşehir", 50),
+        City("Niğde", 51),
+        City("Ordu", 52),
+        City("Rize", 53),
+        City("Sakarya", 54),
+        City("Samsun", 55),
+        City("Siirt", 56),
+        City("Sinop", 57),
+        City("Sivas", 58),
+        City("Tekirdağ", 59),
+        City("Tokat", 60),
+        City("Trabzon", 61),
+        City("Tunceli", 62),
+        City("Şanlıurfa", 63),
+        City("Uşak", 64),
+        City("Van", 65),
+        City("Yozgat", 66),
+        City("Zonguldak", 67),
+        City("Aksaray", 68),
+        City("Bayburt", 69),
+        City("Karaman", 70),
+        City("Kırıkkale", 71),
+        City("Batman", 72),
+        City("Şırnak", 73),
+        City("Bartın", 74),
+        City("Ardahan", 75),
+        City("Iğdır", 76),
+        City("Yalova", 77),
+        City("Karabük", 78),
+        City("Kilis", 79),
+        City("Osmaniye", 80),
+        City("Düzce", 81)
+    )
+}
