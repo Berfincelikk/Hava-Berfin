@@ -10,4 +10,5 @@
     <!-- Şehir listesi ekranı -->
     <string name="search_hint">Şehir ara</string>
     <string name="action_clear">Temizle</string>
+    <string name="action_retry">Tekrar dene</string>
 </resources>
