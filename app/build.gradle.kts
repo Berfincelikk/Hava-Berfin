@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,10 +18,39 @@ android {
         // targetSdk: davranislarin hangi surume gore ayarlanacagi.
         targetSdk = 36
         // versionCode sayisal surum kodu, versionName kullaniciya gosterilen surum.
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "1.0.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Imza bilgileri repoya girmez: keystore.properties (bkz. keystore.properties.example).
+    // Dosya yoksa release build debug anahtariyla imzalanir; kampta telefona kurmak icin
+    // yeterlidir, magazaya yuklemek icin gercek keystore zorunludur.
+    val keystoreFile = rootProject.file("keystore.properties")
+    val releaseSigning = if (keystoreFile.exists()) {
+        val keystore = Properties().apply { keystoreFile.inputStream().use(::load) }
+        signingConfigs.create("release") {
+            storeFile = rootProject.file(keystore.getProperty("storeFile"))
+            storePassword = keystore.getProperty("storePassword")
+            keyAlias = keystore.getProperty("keyAlias")
+            keyPassword = keystore.getProperty("keyPassword")
+        }
+    } else {
+        signingConfigs.getByName("debug")
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = releaseSigning
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -31,8 +62,9 @@ android {
     testOptions {
         unitTests {
             // JVM testlerinde Android framework sınıfları (ör. android.util.Log) gerçekte
-            // yoktur. Varsayılan olarak her çağrı exception fırlatır; bu ayar framework
-            // çağrılarının hata yerine varsayılan değer dönmesini sağlar.
+            // yoktur. Varsayılan olarak her çağrı exception fırlatır; bu da ViewModel'in
+            // catch bloğundaki Log.e satırının testi düşürmesine yol açar.
+            // Bu ayar, framework çağrılarının hata yerine varsayılan değer dönmesini sağlar.
             isReturnDefaultValues = true
         }
     }
