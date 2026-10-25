@@ -1,5 +1,6 @@
 package com.kampplus.hava.ui.forecast
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -29,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,8 +45,11 @@ import com.kampplus.hava.model.DailyForecast
 import com.kampplus.hava.model.Forecast
 import com.kampplus.hava.model.HourlyForecast
 import com.kampplus.hava.model.WeatherCondition
+import com.kampplus.hava.ui.CinemaAdvice
+import com.kampplus.hava.ui.CinemaVerdict
 import com.kampplus.hava.ui.LoadState
 import com.kampplus.hava.ui.component.ErrorView
+import com.kampplus.hava.ui.eveningCinemaAdvice
 import com.kampplus.hava.ui.theme.HavaTheme
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -72,7 +79,8 @@ fun ForecastRoute(onBack: () -> Unit, modifier: Modifier = Modifier, viewModel: 
 /**
  * Bir şehrin hava tahmini.
  *
- * Üç bölüm: anlık durum başlığı, saatlik yatay liste, günlük dikey liste.
+ * Dört bölüm: "bu akşam sinema" kararı (Plan B düğmesiyle), anlık durum başlığı,
+ * saatlik yatay liste, günlük dikey liste.
  * Dört durumun tamamı burada da karşılanır.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,14 +120,23 @@ fun ForecastScreen(
                 LoadState.Loading -> CircularProgressIndicator()
                 LoadState.Empty -> ErrorView(message = "Bu şehir için tahmin bulunamadı.")
                 is LoadState.Error -> ErrorView(message = uiState.message, onRetry = onRetry)
-                is LoadState.Success -> ForecastContent(subtitle = subtitle, forecast = uiState.data)
+                is LoadState.Success -> ForecastContent(
+                    cityName = cityName,
+                    subtitle = subtitle,
+                    forecast = uiState.data
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ForecastContent(subtitle: String, forecast: Forecast, modifier: Modifier = Modifier) {
+private fun ForecastContent(
+    cityName: String,
+    subtitle: String,
+    forecast: Forecast,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -128,6 +145,12 @@ private fun ForecastContent(subtitle: String, forecast: Forecast, modifier: Modi
             .padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Bu akşam açık hava sinemasına gidilir mi? Gidilmezse Plan B düğmesi çıkar.
+        VerdictCard(
+            advice = eveningCinemaAdvice(forecast),
+            cityName = cityName,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
         CurrentWeatherHeader(
             subtitle = subtitle,
             current = forecast.current,
@@ -141,6 +164,52 @@ private fun ForecastContent(subtitle: String, forecast: Forecast, modifier: Modi
                 // İlk satır hariç her satırın üstüne ayırıcı çizgi.
                 if (index > 0) HorizontalDivider()
                 DailyRow(day = day, isToday = index == 0)
+            }
+        }
+    }
+}
+
+/**
+ * "Bu akşam sinema: Git 🎬" + nedeni. Rengi karara göre değişir.
+ * Karar "Git" değilse Plan B: şehirdeki kapalı sinemaları Haritalar'da arar.
+ */
+@Composable
+private fun VerdictCard(advice: CinemaAdvice, cityName: String, modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+    val container = when (advice.verdict) {
+        CinemaVerdict.GO -> MaterialTheme.colorScheme.primaryContainer
+        CinemaVerdict.MAYBE -> MaterialTheme.colorScheme.tertiaryContainer
+        CinemaVerdict.SKIP -> MaterialTheme.colorScheme.errorContainer
+    }
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = container)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Bu akşam sinema: ${advice.verdict.title} ${advice.verdict.emoji}",
+                style = MaterialTheme.typography.titleLarge
+            )
+            Text(text = advice.reason, style = MaterialTheme.typography.bodyMedium)
+
+            if (advice.verdict != CinemaVerdict.GO) {
+                val label = if (advice.verdict == CinemaVerdict.SKIP) {
+                    "Plan B: kapalı sinemalar 🍿"
+                } else {
+                    "İstersen kapalı sinema da var 🍿"
+                }
+                Button(
+                    onClick = {
+                        val query = Uri.encode("sinema $cityName")
+                        uriHandler.openUri("https://www.google.com/maps/search/?api=1&query=$query")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(label)
+                }
             }
         }
     }
@@ -308,8 +377,8 @@ private val DAY_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE", 
 private fun ForecastScreenPreview() {
     HavaTheme {
         ForecastScreen(
-            cityName = "Ankara",
-            subtitle = "Ankara, Türkiye",
+            cityName = "İstanbul",
+            subtitle = "Beşiktaş, İstanbul",
             uiState = LoadState.Success(
                 Forecast(
                     current = CurrentWeather(
