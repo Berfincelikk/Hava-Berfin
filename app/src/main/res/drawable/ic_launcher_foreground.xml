@@ -1,20 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Güneş + bulut: adaptive icon güvenli alanı (66dp) içinde çizilir. -->
+<!-- Gece perdesi: adaptive icon güvenli alanı (66dp) içinde çizilir. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
   android:width="108dp"
   android:height="108dp"
   android:viewportWidth="108"
   android:viewportHeight="108">
+
+  <!-- Tüm alanı kaplayan gece zemini (mavi arka planı örter) -->
   <path
-    android:fillColor="#FFD54F"
-    android:pathData="M46,44m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
-  <path
-    android:fillColor="#00000000"
-    android:pathData="M46,26L46,21M46,67L46,62M28,44L23,44M64,44L69,44M33,31L29.5,27.5M59,31L62.5,27.5M33,57L29.5,60.5"
-    android:strokeWidth="3"
-    android:strokeColor="#FFD54F"
-    android:strokeLineCap="round" />
-  <path
-    android:fillColor="#FFFFFF"
-    android:pathData="M44,78L74,78A10,10 0,0 0,74 58A13,13 0,0 0,49.5 60.5A9,9 0,0 0,44 78Z" />
+    android:fillColor="#12142B"
+    android:pathData="M0,0 h108 v108 h-108 z" />
+
+  <!-- 240'lık sahne, ikonun güvenli alanına sığacak şekilde küçültüldü ve ortalandı -->
+  <group
+    android:pivotX="120"
+    android:pivotY="120"
+    android:scaleX="0.38"
+    android:scaleY="0.38"
+    android:translateX="-66"
+    android:translateY="-66">
+
+    <!-- Gece dairesi -->
+    <path
+      android:fillColor="#1B1F3B"
+      android:pathData="M30,120 a90,90 0 1,1 180,0 a90,90 0 1,1 -180,0 z" />
+
+    <!-- Yıldızlar -->
+    <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M66,62 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0 z" />
+    <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M93,44 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0 z" />
+    <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M145,40 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0 z" />
+    <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M177,86 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0 z" />
+
+    <!-- Hilal ay (dairenin içinde kalır) -->
+    <path
+      android:fillColor="#FFD966"
+      android:pathData="M149,62 a11,11 0 1,1 22,0 a11,11 0 1,1 -22,0 z" />
+    <path
+      android:fillColor="#1B1F3B"
+      android:pathData="M155,58 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0 z" />
+
+    <!-- Perde ayakları -->
+    <path
+      android:strokeColor="#8A8FB0"
+      android:strokeWidth="5"
+      android:pathData="M88,150 L88,175" />
+    <path
+      android:strokeColor="#8A8FB0"
+      android:strokeWidth="5"
+      android:pathData="M152,150 L152,175" />
+
+    <!-- Perde -->
+    <path
+      android:fillColor="#F4F1E8"
+      android:pathData="M65,85 h110 v65 h-110 z" />
+
+    <!-- Perdedeki güneş -->
+    <path
+      android:fillColor="#FFC83D"
+      android:pathData="M88,108 a12,12 0 1,1 24,0 a12,12 0 1,1 -24,0 z" />
+
+    <!-- Perdedeki bulut -->
+    <path
+      android:fillColor="#8EC5F0"
+      android:pathData="M118,130 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0 z" />
+    <path
+      android:fillColor="#8EC5F0"
+      android:pathData="M131,126 a13,13 0 1,1 26,0 a13,13 0 1,1 -26,0 z" />
+    <path
+      android:fillColor="#8EC5F0"
+      android:pathData="M150,132 a9,9 0 1,1 18,0 a9,9 0 1,1 -18,0 z" />
+    <path
+      android:fillColor="#8EC5F0"
+      android:pathData="M128,130 h40 v11 h-40 z" />
+  </group>
 </vector>

@@ -3,8 +3,11 @@
 
   <!--
     Uygulama penceresinin XML teması. Asıl renkler Compose tarafında
-    (ui/theme/Theme.kt) tanımlanır; buradaki tema yalnızca pencere kabuğunu
-    ayarlar: başlık çubuğu olmasın (NoActionBar).
+    (ui/theme/Theme.kt) tanımlanır; buradaki tema pencere kabuğunu ayarlar:
+    başlık çubuğu yok, pencere arka planı ve sistem açılışı gece laciverti.
   -->
-  <style name="Theme.Hava" parent="android:Theme.Material.Light.NoActionBar" />
+  <style name="Theme.Hava" parent="android:Theme.Material.Light.NoActionBar">
+    <item name="android:windowBackground">#12142B</item>
+    <item name="android:windowSplashScreenBackground">#12142B</item>
+  </style>
 </resources>

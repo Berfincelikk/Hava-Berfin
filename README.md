@@ -1,16 +1,8 @@
-<div align="center">
+# Hava — Hava Durumu ve Akşam Planı
 
-<img src="docs/qr-repo.png" alt="github.com/tc-yusufburakdemir/weather-app adresinin QR kodu" width="220">
+Kotlin ve Jetpack Compose ile geliştirilmiş Android hava durumu uygulaması. Open-Meteo üzerinden şehir arar; anlık hava durumunu, saatlik ve 7 günlük tahmini gösterir. Hava durumuna göre sinema ve akşam planı önerileri sunar.
 
-**Repoya erişim**
-
-[github.com/tc-yusufburakdemir/weather-app](https://github.com/tc-yusufburakdemir/weather-app)
-
-</div>
-
-# Hava — Şehir Arama ve Hava Tahmini
-
-Bilişim Kampı Android eğitiminin **referans çözümü**. Open-Meteo servisinden şehir arar, seçilen şehrin anlık durumunu, saatlik ve 7 günlük tahminini gösterir; yükleniyor / veri / boş / hata durumlarının tamamını ele alır.
+GitHub deposu: [Berfincelikk/Hava-Berfin](https://github.com/Berfincelikk/Hava-Berfin)
 
 Mimari ayrıntıları için [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
@@ -69,22 +61,6 @@ com.kampplus.hava
 ```
 
 Android SDK yolunu `local.properties` içinde `sdk.dir=...` ile veya `ANDROID_HOME` ortam değişkeniyle verin.
-
-## Checkpoint'ler
-
-Her ders bloğunun sonunda projenin olması gereken hâli ayrı bir branch'tedir. `cpN` = **Uygulama N+1**.
-
-| Branch | Karşılığı | İçerik |
-|---|---|---|
-| `cp1-baslangic` | — | Boş Empty Activity projesi, "Merhaba Kamp!" |
-| `cp1-bitis` / `cp2-baslangic` | Uygulama 2 | Sabit şehir listesi, `CityCard` + plaka rozeti, `LazyColumn`, tıklamada `Log.d` |
-| `cp2-bitis` / `cp3-baslangic` | Uygulama 3 | Arama kutusu, `rememberSaveable`, filtre, boş durum, `CityViewModel`, `model/data/ui` paketleri |
-| `cp3-bitis` / `cp4-baslangic` | Uygulama 4 | Retrofit + Gson, `ApiClient`, `CityRepository`, dört durum, Shimmer, `try/catch` |
-| `cp4-bitis` (= `main`) | Uygulama 5 | Tahmin ekranı + navigasyon, cila, testler |
-
-Bir bloğu yetiştiremediyseniz kodunuzu `katilimci/<ad>/cpN` branch'ine kaydedip sonraki bloğun başlangıç branch'ine geçin.
-
-`archive/v1-clean-arch` branch'i, projenin önceki Clean Architecture + Hilt + Room sürümünü saklar.
 
 ## Testler
 
